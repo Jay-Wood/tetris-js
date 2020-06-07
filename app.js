@@ -3,8 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector(".grid")
     let squares = Array.from(document.querySelectorAll(".grid div"))
     let nextRandom = 0
-    const ScoreDisplay = document.getElementById("#score")
-    const StartButton = document.getElementById("#start-button")
+    const scoreDisplay = document.getElementById("score")
+    const startButton = document.getElementById("start-button")
+    let timerId 
+    let score = 0
 
 //Shapes for pieces as they rotate
     const jPiece = [
@@ -14,10 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
         [0, width, width+1, width+2]
     ]
     const tPiece = [
-        [0, 1, 2, width+1, width*2+1],
-        [2, width, width+1, width+2, width*2+2],
-        [1, width+1, width*2, width*2+1, width*2+2],
-        [0, width, width*2, width+1, width+2]
+        [0, 1, 2, width+1],
+        [1, width, width+1, width+2],
+        [1, width, width+1, width+2],
+        [0, width, width+1, width*2]
     ]
     const lPiece = [
         [0, 1, width+1, width*2+1],
@@ -51,9 +53,10 @@ let currentPosition = 4;
 let currentRotation = 0;
 
 //randomly select piece 
-let randomNum = Math.floor(Math.random()*allPieces.length)
+let randomNum = Math.floor(Math.random() * allPieces.length)
 let activePiece = allPieces[randomNum][currentRotation]
 
+console.log("allPieces: ", allPieces)
 
 //draw piece 
 function draw() {
@@ -70,7 +73,7 @@ function undraw() {
 }
 
 //set timing for pieces to move down grid
-let gameTimer = setInterval(moveDown, 200)
+
 
 //key controls for piece movement
 function controlPiece(e) {
@@ -105,6 +108,7 @@ function freezePiece() {
         currentPosition = 4
         draw()
         displayNextPiece()
+        addScore()
     }
 }
 
@@ -136,9 +140,9 @@ function moveRight() {
 
 //rotate piece
 function rotatePiece() {
+    console.log("ROTATE")
     undraw()
     currentRotation++
-    console.log("ROTATE")
     if(currentRotation === activePiece.length) {
         currentRotation = 0
     } 
@@ -155,7 +159,7 @@ let miniGridIndex = 0
 //picking 1st rotation of each piece to display in mini-grid
 const nextPiecesUp = [
     [1, miniGridWidth+1, miniGridWidth*2+1, 2], 
-    [0, 1, 2, miniGridWidth+1, miniGridWidth*2+1], //tPiece
+    [0, 1, 2, miniGridWidth+1], //tPiece
     [0, 1, miniGridWidth+1, miniGridWidth*2+1],
     [0, 1, miniGridWidth+1, miniGridWidth+2],
     [0, 1, miniGridWidth , miniGridWidth+1],
@@ -175,6 +179,36 @@ function displayNextPiece() {
     })
 }
 
-// draw();
+//button functionality
+startButton.addEventListener("click", () => {
+    if(timerId) {
+        clearInterval(timerId)
+        timerId = null
+    } else {
+        draw()
+        timerId = setInterval(moveDown, 1000)
+        nextRandom = Math.floor(Math.random()*allPieces.length)
+        displayNextPiece()
+    }
+})
+
+//add score
+function addScore() {
+    for (i=0; i < 199; i += width) {
+        const row = [i, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8, i+9]
+
+        if(row.every(index => squares[index].classList.contains("taken"))) {
+            score+=10;
+            scoreDisplay.innerHTML = score;
+            row.forEach(index => {
+                squares[index].classList.remove("taken")
+                squares[index].classList.remove("piece")
+            })
+            const squaresRemoved = squares.splice(i, width)
+            squares = squaresRemoved.concat(squares)
+            squares.forEach(sq => grid.appendChild(sq))
+        }
+    }
+}
 
 })
