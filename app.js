@@ -78,6 +78,21 @@ function undraw() {
 //set timing for pieces to move down grid
 let gameTimer = setInterval(moveDown, 200)
 
+//key controls for piece movement
+function controlPiece(e) {
+    if(e.keyCode === 37) {
+        moveLeft()
+    } else if(e.keyCode === 39) {
+        moveRight()
+    } else if(e.keyCode === 38) {
+        //rotatePiece
+    } else if(e.keyCode === 40) {
+        moveDown()
+    } 
+}
+
+document.addEventListener('keyup', controlPiece)
+
 //shift pieces down at gameTimer interval
 function moveDown() {
     undraw()
@@ -88,16 +103,41 @@ function moveDown() {
 
 //freeze pieces that hit bottom of grid, start new piece
 function freezePiece() {
-    if(activePiece.some(index => squares[currentPosition + index + width].classList.contains("bottom"))) {
+    if(activePiece.some(index => squares[currentPosition + index + width].classList.contains("taken"))) {
         console.log("HIT BOTTOM")
-        activePiece.forEach(index => squares[currentPosition + index].classList.add("bottom"))
+        activePiece.forEach(index => squares[currentPosition + index].classList.add("taken"))
         newRandomNum = Math.floor(Math.random() * allPieces.length)
         randomNum = newRandomNum 
         activePiece = allPieces[randomNum][currentRotation]
         currentPosition = 4
         draw()
     }
-    
+}
+
+//move left, unless already at far left
+function moveLeft() {
+    undraw()
+    const isAtLeftEdge = activePiece.some(index => (currentPosition + index) % width === 0)
+    if(!isAtLeftEdge) {
+        currentPosition -=1
+    }
+    if(activePiece.some(index => squares[currentPosition + index].classList.contains("taken"))) {
+        currentPosition +=1
+    }
+    draw()
+}
+
+//move right, unless already at far right
+function moveRight() {
+    undraw()
+    const isAtRightEdge = activePiece.some(index => (currentPosition + index) % width === width-1)
+    if(!isAtRightEdge) {
+        currentPosition +=1
+    }
+    if(activePiece.some(index => squares[currentPosition + index].classList.contains("taken"))) {
+        currentPosition -=1
+    }
+    draw()
 }
 
 
