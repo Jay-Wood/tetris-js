@@ -1,11 +1,10 @@
 .piece {
     background-color: black;
-    /* border: 2px solid blue; */
+    
 }
 
-#grid-container{
-    border: 1px solid red;
-    align-items: center;
+.grid-container{
+    display: flex;
 }
 
 .grid{
@@ -25,4 +24,19 @@
 
 .taken {
     background-color: blue;
+}
+
+.mini-grid {
+    width: 80px;
+    height: 80px;
+    display: flex; 
+    flex-wrap: wrap;
+    background-color: yellow;
+    margin-left: 50px;
+    border: 2px solid blue;
+}
+
+.mini-grid div {
+    height: 20px; 
+    width: 20px;
 }

@@ -2,47 +2,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const width = 10
     const grid = document.querySelector(".grid")
     let squares = Array.from(document.querySelectorAll(".grid div"))
-
+    let nextRandom = 0
     const ScoreDisplay = document.getElementById("#score")
     const StartButton = document.getElementById("#start-button")
 
-    //Shapes for pieces as they rotate
-    
+//Shapes for pieces as they rotate
     const jPiece = [
         [1, width+1, width*2+1, 2],
         [width, width+1, width+2, width*2+2],
         [1, width+1, width*2+1, width*2],
         [0, width, width+1, width+2]
     ]
-
     const tPiece = [
         [0, 1, 2, width+1, width*2+1],
         [2, width, width+1, width+2, width*2+2],
         [1, width+1, width*2, width*2+1, width*2+2],
         [0, width, width*2, width+1, width+2]
     ]
-
     const lPiece = [
         [0, 1, width+1, width*2+1],
         [2, width, width+1, width+2],
         [1, width+1, width*2+1, width*2+2],
         [width, width*2, width+1, width+2]
     ]
-
     const zPiece = [
         [0, 1, width+1, width+2],
         [1, width, width+1, width*2],
         [0, 1, width+1, width+2],
         [1, width, width+1, width*2]
     ]
-
     const oPiece = [
         [0,1,width, width+1],
         [0,1,width, width+1],
         [0,1,width, width+1],
         [0,1,width, width+1]
     ]
-
     const iPiece = [
         [1,width+1,width*2+1, width*3+1],
         [width, width+1, width+2, width+3],
@@ -85,7 +79,7 @@ function controlPiece(e) {
     } else if(e.keyCode === 39) {
         moveRight()
     } else if(e.keyCode === 38) {
-        //rotatePiece
+        rotatePiece()
     } else if(e.keyCode === 40) {
         moveDown()
     } 
@@ -104,13 +98,13 @@ function moveDown() {
 //freeze pieces that hit bottom of grid, start new piece
 function freezePiece() {
     if(activePiece.some(index => squares[currentPosition + index + width].classList.contains("taken"))) {
-        console.log("HIT BOTTOM")
         activePiece.forEach(index => squares[currentPosition + index].classList.add("taken"))
-        newRandomNum = Math.floor(Math.random() * allPieces.length)
-        randomNum = newRandomNum 
+        randomNum = nextRandom 
+        nextRandom = Math.floor(Math.random() * allPieces.length)
         activePiece = allPieces[randomNum][currentRotation]
         currentPosition = 4
         draw()
+        displayNextPiece()
     }
 }
 
@@ -140,7 +134,47 @@ function moveRight() {
     draw()
 }
 
+//rotate piece
+function rotatePiece() {
+    undraw()
+    currentRotation++
+    console.log("ROTATE")
+    if(currentRotation === activePiece.length) {
+        currentRotation = 0
+    } 
+    activePiece = allPieces[randomNum][currentRotation]
+    draw()
+}
 
-draw();
+//display next piece in mini-grid
+const miniGrid = document.querySelectorAll(".mini-grid div")
+const miniGridWidth = 4
+let miniGridIndex = 0
+
+
+//picking 1st rotation of each piece to display in mini-grid
+const nextPiecesUp = [
+    [1, miniGridWidth+1, miniGridWidth*2+1, 2], 
+    [0, 1, 2, miniGridWidth+1, miniGridWidth*2+1], //tPiece
+    [0, 1, miniGridWidth+1, miniGridWidth*2+1],
+    [0, 1, miniGridWidth+1, miniGridWidth+2],
+    [0, 1, miniGridWidth , miniGridWidth+1],
+    [1,miniGridWidth+1,miniGridWidth*2+1, miniGridWidth*3+1]
+]
+
+//display next piece in mini-grid
+function displayNextPiece() {
+    console.log("DisplayNextPiece is working")
+    //undraw previous piece
+    miniGrid.forEach(square => {
+        square.classList.remove("piece")
+    })
+
+    nextPiecesUp[nextRandom].forEach(index => {
+        miniGrid[miniGridIndex + index].classList.add("piece")
+    })
+}
+
+// draw();
 
 })
