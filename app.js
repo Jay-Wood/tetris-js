@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const allPieces = [jPiece, tPiece, lPiece, zPiece, oPiece, iPiece]
 
+//set starting position and rotation for pieces
 let currentPosition = 4;
 let currentRotation = 0;
 
@@ -60,14 +61,45 @@ let randomNum = Math.floor(Math.random()*allPieces.length)
 let activePiece = allPieces[randomNum][currentRotation]
 
 
-console.log(activePiece)
-
-//drawing pieces
+//draw piece 
 function draw() {
     activePiece.forEach(index =>{
-        squares[currentPosition + index].classList.add('piece')
+        squares[currentPosition + index].classList.add("piece")
     })
 }
+
+//undraw piece
+function undraw() {
+    activePiece.forEach(index => {
+        squares[currentPosition + index].classList.remove("piece")
+    })
+}
+
+//set timing for pieces to move down grid
+let gameTimer = setInterval(moveDown, 200)
+
+//shift pieces down at gameTimer interval
+function moveDown() {
+    undraw()
+    currentPosition += width
+    draw()
+    freezePiece()
+}
+
+//freeze pieces that hit bottom of grid, start new piece
+function freezePiece() {
+    if(activePiece.some(index => squares[currentPosition + index + width].classList.contains("bottom"))) {
+        console.log("HIT BOTTOM")
+        activePiece.forEach(index => squares[currentPosition + index].classList.add("bottom"))
+        newRandomNum = Math.floor(Math.random() * allPieces.length)
+        randomNum = newRandomNum 
+        activePiece = allPieces[randomNum][currentRotation]
+        currentPosition = 4
+        draw()
+    }
+    
+}
+
 
 draw();
 
