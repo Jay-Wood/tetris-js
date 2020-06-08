@@ -7,6 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const startButton = document.getElementById("start-button")
     let timerId 
     let score = 0
+    const colors = [
+        'red',
+        'blue',
+        'green',
+        'lightblue',
+        'orange',
+        'purple'
+    ]
+
+    let turn = 1
+
 
 //Shapes for pieces as they rotate
     const jPiece = [
@@ -16,10 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         [0, width, width+1, width+2]
     ]
     const tPiece = [
-        [0, 1, 2, width+1],
-        [1, width, width+1, width+2],
-        [1, width, width+1, width+2],
-        [0, width, width+1, width*2]
+        [0, 1, 2, width+1], 
+        [1, width, width+1, width*2+1],
+        [1, width, width+1, width+2],  
+        [1, width+1, width+2, width*2+1] 
     ]
     const lPiece = [
         [0, 1, width+1, width*2+1],
@@ -56,12 +67,12 @@ let currentRotation = 0;
 let randomNum = Math.floor(Math.random() * allPieces.length)
 let activePiece = allPieces[randomNum][currentRotation]
 
-console.log("allPieces: ", allPieces)
-
 //draw piece 
 function draw() {
     activePiece.forEach(index =>{
         squares[currentPosition + index].classList.add("piece")
+        squares[currentPosition + index].style.backgroundColor = colors[randomNum]
+        console.log("currentPosition: ", currentPosition)
     })
 }
 
@@ -69,11 +80,9 @@ function draw() {
 function undraw() {
     activePiece.forEach(index => {
         squares[currentPosition + index].classList.remove("piece")
+        squares[currentPosition + index].style.backgroundColor = ""
     })
 }
-
-//set timing for pieces to move down grid
-
 
 //key controls for piece movement
 function controlPiece(e) {
@@ -109,6 +118,10 @@ function freezePiece() {
         draw()
         displayNextPiece()
         addScore()
+        turn++
+        turn.innerHTML = `turn`
+        console.log("Turn #: ", turn)
+        endGame()
     }
 }
 
@@ -140,7 +153,6 @@ function moveRight() {
 
 //rotate piece
 function rotatePiece() {
-    console.log("ROTATE")
     undraw()
     currentRotation++
     if(currentRotation === activePiece.length) {
@@ -150,11 +162,27 @@ function rotatePiece() {
     draw()
 }
 
+//handle edge cases for rotation
+function isAtRight() {
+    if(activePiece.some(index => (currentPosition + index + 1) % width === 0)) {
+        return true;
+    }
+}
+function isAtLeft() {
+    if(activePiece.some(index => (currentPosition + index) % width === 0)) {
+        return true;
+    }
+}
+
+// function checkRotation {
+    
+// }
+
+
 //display next piece in mini-grid
 const miniGrid = document.querySelectorAll(".mini-grid div")
 const miniGridWidth = 4
-let miniGridIndex = 0
-
+const miniGridIndex = 0
 
 //picking 1st rotation of each piece to display in mini-grid
 const nextPiecesUp = [
@@ -168,14 +196,15 @@ const nextPiecesUp = [
 
 //display next piece in mini-grid
 function displayNextPiece() {
-    console.log("DisplayNextPiece is working")
     //undraw previous piece
     miniGrid.forEach(square => {
         square.classList.remove("piece")
+        square.style.backgroundColor = ""
     })
 
     nextPiecesUp[nextRandom].forEach(index => {
         miniGrid[miniGridIndex + index].classList.add("piece")
+        miniGrid[miniGridIndex + index].style.backgroundColor = colors[nextRandom]
     })
 }
 
@@ -203,11 +232,20 @@ function addScore() {
             row.forEach(index => {
                 squares[index].classList.remove("taken")
                 squares[index].classList.remove("piece")
+                squares[index].style.backgroundColor = ""
             })
             const squaresRemoved = squares.splice(i, width)
             squares = squaresRemoved.concat(squares)
             squares.forEach(sq => grid.appendChild(sq))
         }
+    }
+}
+
+//end game function
+function endGame() {
+    if(activePiece.some(index => squares[currentPosition + index].classList.contains("taken"))) {
+        scoreDisplay.innerHTML = "Game Over"
+        clearInterval(timerId)
     }
 }
 

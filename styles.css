@@ -5,6 +5,7 @@
 
 .grid-container{
     display: flex;
+    justify-content: center;
 }
 
 .grid{
@@ -22,9 +23,9 @@
     /* background-color: yellow; */
 }
 
-/* .taken {
+.taken {
     background-color: blue;
-} */
+}
 
 .mini-grid {
     width: 80px;
