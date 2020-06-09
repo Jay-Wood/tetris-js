@@ -118,9 +118,7 @@ function freezePiece() {
         draw()
         displayNextPiece()
         addScore()
-        turn++
-        turn.innerHTML = `turn`
-        console.log("Turn #: ", turn)
+        // turn++
         endGame()
     }
 }
@@ -141,6 +139,7 @@ function moveLeft() {
 //move right, unless already at far right
 function moveRight() {
     undraw()
+    //returns true if any of the activePiece's squares are in position 9, i.e. the farthest right 
     const isAtRightEdge = activePiece.some(index => (currentPosition + index) % width === width-1)
     if(!isAtRightEdge) {
         currentPosition +=1
@@ -159,24 +158,37 @@ function rotatePiece() {
         currentRotation = 0
     } 
     activePiece = allPieces[randomNum][currentRotation]
+    checkRotation()
     draw()
 }
 
 //handle edge cases for rotation
 function isAtRight() {
-    if(activePiece.some(index => (currentPosition + index + 1) % width === 0)) {
-        return true;
-    }
+    return activePiece.some(index => (currentPosition + index + 1) % width === 0)
 }
+
 function isAtLeft() {
     if(activePiece.some(index => (currentPosition + index) % width === 0)) {
         return true;
     }
 }
 
-// function checkRotation {
+function checkRotation(pos) {
+    pos = pos || currentPosition
+    if((pos+1) % width < 4) {
+        if(isAtRight()) {
+            currentPosition += 1
+            checkRotation(pos)
+        }
+    } 
+    else if(pos % width > 5) {
+        if(isAtLeft()) {
+            currentPosition -= 1
+            checkRotation(pos)
+        }
+    }
     
-// }
+}
 
 
 //display next piece in mini-grid
