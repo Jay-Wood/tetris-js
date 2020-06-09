@@ -5,19 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let nextRandom = 0
     const scoreDisplay = document.getElementById("score")
     const startButton = document.getElementById("start-button")
+    const turnDisplay = document.getElementById("turn")
     let timerId 
     let score = 0
-    const colors = [
-        'red',
-        'blue',
-        'green',
-        'lightblue',
-        'orange',
-        'purple'
-    ]
-
-    let turn = 1
-
+    const colors = [ 'red', 'blue', 'green', 'lightblue', 'orange', 'purple']
+    let turn = 0
 
 //Shapes for pieces as they rotate
     const jPiece = [
@@ -62,7 +54,6 @@ const allPieces = [jPiece, tPiece, lPiece, zPiece, oPiece, iPiece]
 //set starting position and rotation for pieces
 let currentPosition = 4;
 let currentRotation = 0;
-
 //randomly select piece 
 let randomNum = Math.floor(Math.random() * allPieces.length)
 let activePiece = allPieces[randomNum][currentRotation]
@@ -72,7 +63,6 @@ function draw() {
     activePiece.forEach(index =>{
         squares[currentPosition + index].classList.add("piece")
         squares[currentPosition + index].style.backgroundColor = colors[randomNum]
-        console.log("currentPosition: ", currentPosition)
     })
 }
 
@@ -117,9 +107,10 @@ function freezePiece() {
         currentPosition = 4
         draw()
         displayNextPiece()
+        addTurn()
         addScore()
-        // turn++
         endGame()
+        console.log(turn)
     }
 }
 
@@ -187,7 +178,6 @@ function checkRotation(pos) {
             checkRotation(pos)
         }
     }
-    
 }
 
 
@@ -231,6 +221,10 @@ startButton.addEventListener("click", () => {
         nextRandom = Math.floor(Math.random()*allPieces.length)
         displayNextPiece()
     }
+    if(turn == 0) {
+        turn++
+        turnDisplay.innerHTML = turn
+    }
 })
 
 //add score
@@ -251,6 +245,11 @@ function addScore() {
             squares.forEach(sq => grid.appendChild(sq))
         }
     }
+}
+
+function addTurn() {
+    turn++
+    turnDisplay.innerHTML = turn
 }
 
 //end game function
