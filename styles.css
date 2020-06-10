@@ -7,9 +7,11 @@ body {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat; 
-    border: 2px solid gray;
-    height: 96vh;
-    /* width: 200%;  */
+    height: 100%;
+    min-width: 556px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
 }
 
 
@@ -26,7 +28,7 @@ h1 {
     justify-content: space-evenly;
     /* border: 1.5px solid blue; */
     width: 90%;
-    height: 100%;
+    /* height: 100%; */
     /* padding: 1%; */
 }
 
@@ -35,10 +37,10 @@ h1 {
     margin: 1%;
     justify-content: center;
     align-items: flex-start;
-    /* height: 99%; */
+    height: 99%;
     width: 80%;
-    min-width: 575px;;
-    /* border: 1px solid red; */
+    min-width: 535px;
+    border: 1px solid red;
    
 }
 

@@ -220,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(timerId)
             timerId = null
         } else {
+            scoreDisplay.innerHTML = score
             draw()
             timerId = setInterval(moveDown, 1000)
             // nextRandom = Math.floor(Math.random()*allPieces.length)
@@ -252,22 +253,30 @@ document.addEventListener('DOMContentLoaded', () => {
         turnDisplay.innerHTML = turn
     }
 
-
     function undrawAll() {
         squares.forEach(sq => sq.classList.remove("piece"))
+        squares.forEach(sq => sq.classList.remove("taken"))
+        squares.forEach(element => element.style.backgroundColor = "")
     }
 
     function resetGame() {
         clearInterval(timerId)
+        currentPosition = 4;
+        currentRotation = 0;
         score = 0
         turn = 0
-        turnDisplay.innerHTML("0")
+        timerId = null
+        randomNum = Math.floor(Math.random() * allPieces.length)
+        activePiece = allPieces[randomNum][currentRotation]
         undrawAll();
     }
 
     resetButton.addEventListener("click", () => {
         resetGame()
-        console.log("squares after undrawAll", squares)
+        console.log("squares after resetGame", squares)
+        
+        // draw()
+        // timerId = setInterval(moveDown, 1000)
     })
 
 
