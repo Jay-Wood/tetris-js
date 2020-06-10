@@ -1,16 +1,24 @@
+
+
 body {
-    padding: 1%;
-    background-image: url("./nebula-img.jpg"); 
-    background-color: darkslateblue;
+    /* padding: 10%; */
+    background-image: url("./stars-bg-img.jpg");
+    /* background-color: darkslateblue; */
     background-position: center;
     background-size: cover;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; 
+    border: 2px solid gray;
+    height: 96vh;
+    /* width: 200%;  */
 }
 
 
 h1 {
     text-align: center;
-    color: whitesmoke;
+    color: rgb(162, 223, 204);
+    font-size: 3rem;
+    font-weight: bolder;
+    /* text-emphasis: filled sesame #555; */
 }
 
 .main-container{
@@ -18,8 +26,8 @@ h1 {
     justify-content: space-evenly;
     /* border: 1.5px solid blue; */
     width: 90%;
-    /* height: 100vh; */
-    padding: 1%;
+    height: 100%;
+    /* padding: 1%; */
 }
 
 .grid-container{

@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let nextRandom = 0
     const scoreDisplay = document.getElementById("score")
     const startButton = document.getElementById("start-button")
+    const resetButton = document.getElementById("reset-button")
     const turnDisplay = document.getElementById("turn")
     let timerId 
     let score = 0
@@ -63,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
             squares[currentPosition + index].classList.add("piece")
             squares[currentPosition + index].style.backgroundColor = colors[randomNum]
             squares[currentPosition + index].style.border = "hide";
-
         })
     }
 
@@ -181,7 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
     //display next piece in mini-grid
     const miniGrid = document.querySelectorAll(".mini-grid div")
     const miniGridWidth = 4
@@ -225,7 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
             timerId = setInterval(moveDown, 1000)
             // nextRandom = Math.floor(Math.random()*allPieces.length)
             displayNextPiece()
-            console.log("random: ", randomNum, " nextRan: ", nextRandom)
         }
     })
 
@@ -254,6 +252,25 @@ document.addEventListener('DOMContentLoaded', () => {
         turnDisplay.innerHTML = turn
     }
 
+
+    function undrawAll() {
+        squares.forEach(sq => sq.classList.remove("piece"))
+    }
+
+    function resetGame() {
+        clearInterval(timerId)
+        score = 0
+        turn = 0
+        turnDisplay.innerHTML("0")
+        undrawAll();
+    }
+
+    resetButton.addEventListener("click", () => {
+        resetGame()
+        console.log("squares after undrawAll", squares)
+    })
+
+
     //end game function
     function endGame() {
         if(activePiece.some(index => squares[currentPosition + index].classList.contains("taken"))) {
@@ -261,5 +278,13 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(timerId)
         }
     }
-
 })
+
+
+// function undraw() {
+//     activePiece.forEach(index => {
+//         squares[currentPosition + index].classList.remove("piece")
+//         squares[currentPosition + index].style.backgroundColor = ""
+//         squares[currentPosition + index].style.border = ".1pt dotted white";
+//     })
+// }
