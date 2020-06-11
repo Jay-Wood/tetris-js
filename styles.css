@@ -1,26 +1,35 @@
 
 
 body {
-    /* padding: 10%; */
     background-image: url("./stars-bg-img.jpg");
-    /* background-color: darkslateblue; */
     background-position: center;
     background-size: cover;
-    background-repeat: no-repeat; 
+    /* background-repeat: no-repeat;  */
     height: 100%;
     min-width: 556px;
     overflow: hidden;
     display: flex;
     justify-content: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
 }
 
+.header {
+    background-color: rgba(0, 1, 17, 0.5);
+    box-shadow: 1px 2px 3px rgba(0, 1, 17, 0.1);
+    /* background-blend-mode: darken; */
+}
 
 h1 {
+    margin: 1.5 rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
     text-align: center;
-    color: rgb(162, 223, 204);
-    font-size: 3rem;
+    color: rgb(87, 236, 17);
+    font-size: 4rem;
     font-weight: bolder;
-    /* text-emphasis: filled sesame #555; */
+    display: block;
 }
 
 .main-container{
@@ -40,7 +49,7 @@ h1 {
     height: 99%;
     width: 80%;
     min-width: 535px;
-    border: 1px solid red;
+    /* border: 1px solid red; */
    
 }
 
@@ -69,7 +78,6 @@ h1 {
 }
 
 .mini-grid-container {
-    /* border: 5px solid pink; */
     display: flex;
     flex-direction: column;
     align-items: bottom;
@@ -89,7 +97,6 @@ h1 {
     display: flex; 
     flex-wrap: wrap;
     background-color: gray;
-    /* border: 1px solid darkblue; */
 }
 
 .mini-grid div {
@@ -106,7 +113,6 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* border: 3px dotted purple; */
     width: 100%;
 }
 
@@ -117,7 +123,6 @@ h1 {
 }
 
 .bottom-taken {
-    /* border-top: 30px solid black; */
     display: none
 }
 
